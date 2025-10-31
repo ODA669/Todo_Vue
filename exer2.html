@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluation 1</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+</head>
+
+<body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #6a0589;
+        }
+
+        #app {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #app h1 {
+            text-align: center;
+            font-size: 55px;
+            color: white;
+        }
+
+        .navbar {
+            background-color: #007BFF;
+            padding: 10px 20px;
+            border-radius: 5px;
+            max-width: 250px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+
+        .carte-position {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            padding: 20px;
+        }
+
+        .carte {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            width: 250px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .carte:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .carte:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .carte h1 {
+            font-size: 1.3rem;
+            margin: 5px 0;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .carte h2 {
+            font-size: 1rem;
+            margin: 3px 0;
+            color: #555;
+            cursor: pointer;
+            height: 29px;
+            margin-top: 10px;
+        }
+
+        .carte h2:last-child {
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        .carte h2:last-child.complet {
+            color: #ff4d4d;
+        }
+
+        .carte button {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .carte button:hover {
+            background-color: #0056b3;
+        }
+
+        .carte span {
+            color: #ff4d4d;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .boutons-cours {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .rouge {
+            color: red !important;
+            font-weight: bold;
+        }
+
+        .message-vide {
+            text-align: center;
+            font-size: 45px;
+            font-weight: bold;
+            color: #161515;
+            margin-top: 50px;
+        }
+    </style>
+    <div id="app">
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">Exercice 1</a></li>
+                <li><a href="exer2.html">Exercice 2</a></li>
+            </ul>
+        </nav>
+        <h1>Liste des Formations</h1>
+        <div class="carte-position">
+            <p v-if="formations.length === 0" class="message-vide">
+                Aucune formation disponible pour le moment.
+            </p>
+            <div class="carte" v-for="Cours in formations" :key="Cours.id">
+                <h2 @click="action"><span>{{ Cours.titre }}</span></h2>
+                <h2 @click="action">ID : {{ Cours.id }}</h1>
+                    <h2 @click="action">Date : {{ Cours.date}}</h2>
+                    <h2 @click="action">Places : Status{{ Cours.places}}</h2>
+                    <h2 :class="{ rouge: Cours.complet }">Status :
+                        {{ Cours.complet ? 'Complet' : 'Disponible' }}
+                    </h2>
+                    <div class="boutons-cours">
+                        <button @click=" ModifieEtatCours(Cours)">
+                            Modifier
+                        </button>
+                        <button @click="suprimerFormation(Cours)">
+                            Suprimir
+                        </button>
+                    </div>
+
+            </div>
+        </div>
+
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    formations: [
+                        {
+                            "id": 1,
+                            "titre": "Initiation au HTML et CSS",
+                            "places": 20,
+                            "date": "2025-11-05",
+                            "complet": false
+                        },
+                        {
+                            "id": 2,
+                            "titre": "JavaScript pour débutants",
+                            "places": 15,
+                            "date": "2025-11-12",
+                            "complet": false
+                        },
+                        {
+                            "id": 3,
+                            "titre": "Maîtriser le DOM et les événements en JavaScript",
+                            "places": 10,
+                            "date": "2025-11-18",
+                            "complet": true
+                        },
+                        {
+                            "id": 4,
+                            "titre": "Introduction à Vue.js 3",
+                            "places": 12,
+                            "date": "2025-11-25",
+                            "complet": false
+                        },
+                        {
+                            "id": 5,
+                            "titre": "React.js : les bases essentielles",
+                            "places": 18,
+                            "date": "2025-12-02",
+                            "complet": false
+                        },
+                        {
+                            "id": 6,
+                            "titre": "Créer des API REST avec Node.js et Express",
+                            "places": 14,
+                            "date": "2025-12-09",
+                            "complet": true
+                        },
+                        {
+                            "id": 7,
+                            "titre": "Bases de données avec MySQL pour développeurs web",
+                            "places": 10,
+                            "date": "2025-12-15",
+                            "complet": false
+                        },
+                        {
+                            "id": 8,
+                            "titre": "Découverte de MongoDB et Mongoose",
+                            "places": 8,
+                            "date": "2026-01-05",
+                            "complet": false
+                        },
+                        {
+                            "id": 9,
+                            "titre": "Développement Fullstack avec Vue.js et Node.js",
+                            "places": 10,
+                            "date": "2026-01-12",
+                            "complet": false
+                        },
+                        {
+                            "id": 10,
+                            "titre": "PHP moderne avec Laravel",
+                            "places": 16,
+                            "date": "2026-01-19",
+                            "complet": true
+                        },
+                        {
+                            "id": 11,
+                            "titre": "Sécurité et Authentification JWT dans les applications web",
+                            "places": 12,
+                            "date": "2026-01-26",
+                            "complet": false
+                        },
+                        {
+                            "id": 12,
+                            "titre": "Création de sites responsives avec Tailwind CSS",
+                            "places": 20,
+                            "date": "2026-02-02",
+                            "complet": false
+                        },
+                        {
+                            "id": 13,
+                            "titre": "Déploiement web avec Docker et Nginx",
+                            "places": 10,
+                            "date": "2026-02-09",
+                            "complet": false
+                        },
+                        {
+                            "id": 14,
+                            "titre": "TypeScript pour développeurs JavaScript",
+                            "places": 15,
+                            "date": "2026-02-16",
+                            "complet": true
+                        },
+                        {
+                            "id": 15,
+                            "titre": "Développement mobile avec Vue Native",
+                            "places": 12,
+                            "date": "2026-02-23",
+                            "complet": false
+                        }
+                    ]
+
+
+                }
+            },
+            methods: {
+                ModifieEtatCours(cours) {
+                    const nouveauTitre = prompt("Entrez un nouveau titre pour la formation :", cours.titre);
+                    if (nouveauTitre && nouveauTitre.trim() !== "") {
+                        cours.titre = nouveauTitre.trim();
+                    }
+                },
+                suprimerFormation(cours) {
+                    this.formations = this.formations.filter(f => f.id !== cours.id);
+
+                }
+            }
+
+        })
+        app.mount("#app")
+    </script>
+</body>
+
+
+</html>
